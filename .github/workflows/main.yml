@@ -65,7 +65,7 @@ jobs:
           sudo apt install -y --allow-unauthenticated cloudflare-warp
 
 
-      - name: 啟用 Cloudflare WARP (新版指令)
+      - name: 啟用 Cloudflare WARP (修正 Proxy 指令)
         run: |
           sudo apt install -y expect  # 安裝 expect 用於自動輸入
           expect -c "
@@ -74,10 +74,11 @@ jobs:
           send \"yes\r\"
           expect eof
           "
-          sudo warp-cli connect           # ✅ 連線到 WARP 伺服器
-          sudo warp-cli proxy enable      # ✅ 啟用 Proxy 模式
+          sudo warp-cli connect      # ✅ 連線到 WARP 伺服器
+          sudo warp-cli proxy on     # ✅ 啟用 Proxy 模式
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
+
 
 
 
