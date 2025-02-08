@@ -74,10 +74,12 @@ jobs:
           send \"yes\r\"
           expect eof
           "
-          sudo warp-cli connect      # ✅ 連線到 WARP 伺服器
-          sudo warp-cli proxy on     # ✅ 啟用 Proxy 模式
+          sudo warp-cli connect             # ✅ 連線到 WARP 伺服器
+          sudo warp-cli enable-always-on    # ✅ 啟用 Always-On 模式 (新版 WARP CLI)
+          sudo warp-cli proxy mode-on       # ✅ 啟用 Proxy 模式
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
+
 
 
 
