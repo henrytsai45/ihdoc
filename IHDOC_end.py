@@ -10,6 +10,7 @@ import time
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import pytz
 
 
 # 讀取環境變數
@@ -34,7 +35,8 @@ def write_to_google_sheets(transaction_total, gross_sales):
     sheet = client.open_by_key(SHEET_ID).sheet1
 
     # 插入資料到第 2 行，舊數據下移
-    now = datetime.now().strftime("最近更新時間：%Y年%m月%d日 %H：%M：%S")
+    taiwan_tz = pytz.timezone("Asia/Taipei")
+    now = datetime.now(pytz.utc).astimezone(taiwan_tz).strftime("最近更新時間：%Y年%m月%d日 %H:%M:%S")
     new_row = [now, transaction_total, gross_sales]
     sheet.insert_row(new_row, 2)
 
