@@ -66,13 +66,14 @@ jobs:
 
 
 
-      - name: 啟用 Cloudflare WARP
+      - name: 啟用 Cloudflare WARP (新版 CLI 指令)
         run: |
-          sudo warp-cli register
+          sudo warp-cli registration
           sudo warp-cli set-mode proxy
           sudo warp-cli connect
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
+
 
       - name: 檢查當前 IP（應該是台灣）
         run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
