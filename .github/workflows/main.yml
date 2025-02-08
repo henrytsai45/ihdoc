@@ -18,11 +18,13 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 手動安裝 Google Chrome 133.0.6943.60
+      - name: 安裝最新 Google Chrome
         run: |
-          wget -q "https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_133.0.6943.60-1_amd64.deb"
-          sudo dpkg -i google-chrome-stable_133.0.6943.60-1_amd64.deb || sudo apt-get -f install -y
-          rm google-chrome-stable_133.0.6943.60-1_amd64.deb
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
 
       - name: 手動安裝 ChromeDriver 133.0.6943.60
         run: |
