@@ -47,8 +47,8 @@ jobs:
           chromedriver --version
 
       - name: 安裝 Python 依賴
-        run: pip install selenium gspread oauth2client
-
+        run: pip install selenium gspread oauth2client pytz
+        
       - name: 執行 Python 腳本
         env:
           GOOGLE_SHEETS_KEYS: ${{ secrets.GOOGLE_SHEETS_KEYS }}
