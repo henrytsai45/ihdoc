@@ -18,12 +18,12 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 安裝與 ChromeDriver 匹配的 Google Chrome
+      - name: 安裝 Google Chrome 最新穩定版
         run: |
-          CHROME_VERSION="133.0.6943.53"  # ✅ 固定 Google Chrome 版本
-          echo "🔍 設定 Google Chrome 版本: $CHROME_VERSION"
+          LATEST_CHROME_VERSION=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json | jq -r '.channels.Stable.version')
+          echo "🔍 最新可用的 Google Chrome 版本: $LATEST_CHROME_VERSION"
 
-          wget -q "https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chrome-linux64.zip"
+          wget -q "https://storage.googleapis.com/chrome-for-testing-public/$LATEST_CHROME_VERSION/linux64/chrome-linux64.zip"
           unzip chrome-linux64.zip
           sudo mv chrome-linux64 /opt/google/chrome
           sudo ln -sf /opt/google/chrome/chrome /usr/bin/google-chrome
@@ -31,10 +31,10 @@ jobs:
 
       - name: 安裝與 Google Chrome 匹配的 ChromeDriver
         run: |
-          DRIVER_VERSION="133.0.6943.53"  # ✅ 固定 ChromeDriver 版本
-          echo "🔍 下載 ChromeDriver 版本: $DRIVER_VERSION"
+          LATEST_CHROME_VERSION=$(google-chrome --version | awk '{print $3}')
+          echo "🔍 當前安裝的 Google Chrome 版本: $LATEST_CHROME_VERSION"
 
-          wget -q "https://storage.googleapis.com/chrome-for-testing-public/$DRIVER_VERSION/linux64/chromedriver-linux64.zip"
+          wget -q "https://storage.googleapis.com/chrome-for-testing-public/$LATEST_CHROME_VERSION/linux64/chromedriver-linux64.zip"
           unzip chromedriver-linux64.zip
           sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
           sudo chmod +x /usr/bin/chromedriver
