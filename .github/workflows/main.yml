@@ -66,14 +66,14 @@ jobs:
 
 
 
-      - name: 啟用 Cloudflare WARP (自動接受條款)
+      - name: 啟用 Cloudflare WARP (正確接受 ToS)
         run: |
-          sudo warp-cli registration new --accept-tos   # ✅ 自動接受 ToS
-          sudo warp-cli set-mode proxy                  # ✅ 設定為 Proxy 模式
-          sudo warp-cli connect                         # ✅ 連線到 WARP 伺服器
+          sudo warp-cli accept-tos               # ✅ 先接受 WARP 條款
+          sudo warp-cli registration new         # ✅ 註冊 WARP
+          sudo warp-cli set-mode proxy           # ✅ 設定為 Proxy 模式
+          sudo warp-cli connect                  # ✅ 連線到 WARP 伺服器
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
-
 
 
 
