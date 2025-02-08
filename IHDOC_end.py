@@ -42,7 +42,7 @@ def main():
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome(options=chrome_options)
+    chrome_options.binary_location = "/usr/bin/google-chrome" 
 
     try:
         # 進到後台登入頁
