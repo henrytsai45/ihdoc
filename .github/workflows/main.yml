@@ -49,16 +49,21 @@ jobs:
       - name: 安裝 Python 依賴
         run: pip install selenium gspread oauth2client pytz
         
-      - name: 安裝 Cloudflare WARP (手動下載並修正 GPG 錯誤)
+      - name: 安裝 Cloudflare WARP (修正 GPG 錯誤)
         run: |
           sudo apt update
           sudo apt install -y curl
-          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo tee /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg > /dev/null
           
+          # 下載 Cloudflare WARP 公鑰
+          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo tee /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg > /dev/null
+
+          # 手動新增 Cloudflare 軟體源 (使用 Ubuntu 22.04 `jammy`)
           echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ jammy main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
           
+          # 更新套件清單，允許未驗證套件
           sudo apt update --allow-insecure-repositories
-          sudo apt install -y cloudflare-warp
+          sudo apt install -y --allow-unauthenticated cloudflare-warp
+
 
 
       - name: 啟用 Cloudflare WARP
