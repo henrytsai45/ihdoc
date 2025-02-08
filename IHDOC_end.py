@@ -46,7 +46,7 @@ def main():
 
     try:
         # 進到後台登入頁
-        driver.get("")
+        driver.get("THEURL")
 
         # 顯式等待
         wait = WebDriverWait(driver, 20)
