@@ -1,3 +1,5 @@
+import os
+import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,14 +10,27 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
+
+# 讀取環境變數
+GOOGLE_SHEETS_CREDENTIALS = os.getenv("GOOGLE_SHEETS_KEYS")  # Google Sheets API Key
+IHGMAIL = os.getenv("IHGMAIL")  # 登入 Email
+IHPASSWORD = os.getenv("IHPASSWORD")  # 登入密碼
+SHEET_ID = os.getenv("SHEET_ID")  # Google Sheets ID
+THEURL = os.getenv("THEURL")  # Shopline 登入網址
+
+
 def write_to_google_sheets(transaction_total, gross_sales):
     # Google Sheets API 設定
+    credentials_json = os.getenv("GOOGLE_SHEETS_KEYS")
+    creds_dict = json.loads(credentials_json)
+
+    
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name('shop-line.json', scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
 
     # 開啟 Google Sheet
-    sheet = client.open_by_key("").sheet1
+    sheet = client.open_by_key(SHEET_ID).sheet1
 
     # 插入資料到第 2 行，舊數據下移
     now = datetime.now().strftime("最近更新時間：%Y年%m月%d日 %H：%M：%S")
@@ -47,8 +62,8 @@ def main():
             EC.element_to_be_clickable((By.ID, "reg-submit-button"))
         )
 
-        username_field.send_keys("")
-        password_field.send_keys("")
+        username_field.send_keys(IHGMAIL)
+        password_field.send_keys(IHPASSWORD)
         login_button.click()
 
         # 等待後台頁面加載完成
