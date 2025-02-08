@@ -43,10 +43,17 @@ def main():
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.binary_location = "/usr/bin/google-chrome" 
-
+    
+    service = Service("/usr/bin/chromedriver")
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    
+    THEURL = os.getenv("THEURL")
+    if not THEURL:
+        raise ValueError("❌ THEURL 環境變數未設定，請檢查 GitHub Secrets。")
     try:
+        print(f"✅ 嘗試訪問 {THEURL}")
         # 進到後台登入頁
-        driver.get("THEURL")
+        driver.get(THEURL)
 
         # 顯式等待
         wait = WebDriverWait(driver, 20)
