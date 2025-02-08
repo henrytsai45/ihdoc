@@ -18,30 +18,27 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: 安裝依賴
-        run: pip install selenium gspread oauth2client
-
-      - name: 安裝 Google Chrome & Chrome 驅動
+      - name: 手動安裝 Google Chrome 133.0.6943.60
         run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+          wget -q "https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_133.0.6943.60-1_amd64.deb"
+          sudo dpkg -i google-chrome-stable_133.0.6943.60-1_amd64.deb || sudo apt-get -f install -y
+          rm google-chrome-stable_133.0.6943.60-1_amd64.deb
 
-          # 下載與 Chrome 版本匹配的 ChromeDriver
-          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
-          echo "🔍 Google Chrome 版本: $CHROME_VERSION"
-          
-          LATEST_DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
-          wget -q "https://chromedriver.storage.googleapis.com/$LATEST_DRIVER_VERSION/chromedriver_linux64.zip"
+      - name: 手動安裝 ChromeDriver 133.0.6943.60
+        run: |
+          wget -q "https://chromedriver.storage.googleapis.com/133.0.6943.60/chromedriver_linux64.zip"
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/bin/chromedriver
           sudo chmod +x /usr/bin/chromedriver
+          rm chromedriver_linux64.zip
 
-      - name: 確保 Chrome & Chromedriver 存在
+      - name: 確保 Chrome & ChromeDriver 版本匹配
         run: |
           google-chrome --version
           chromedriver --version
+
+      - name: 安裝 Python 依賴
+        run: pip install selenium gspread oauth2client
 
       - name: 執行 Python 腳本
         env:
