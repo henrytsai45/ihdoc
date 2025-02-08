@@ -49,18 +49,26 @@ jobs:
       - name: 安裝 Python 依賴
         run: pip install selenium gspread oauth2client pytz
         
-      - name: 安裝 Cloudflare WARP
+      - name: 安裝 Cloudflare WARP (手動下載)
         run: |
           sudo apt update
+          sudo apt install -y curl
+          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo tee /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ jammy main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+          sudo apt update
           sudo apt install -y cloudflare-warp
-          warp-cli register
-          warp-cli set-mode proxy
-          warp-cli connect
+
+      - name: 啟用 Cloudflare WARP
+        run: |
+          sudo warp-cli register
+          sudo warp-cli set-mode proxy
+          sudo warp-cli connect
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
 
-      - name: 檢查 IP 位址（應該是台灣）
+      - name: 檢查當前 IP（應該是台灣）
         run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
+
       - name: 執行 Python 腳本
         env:
           GOOGLE_SHEETS_KEYS: ${{ secrets.GOOGLE_SHEETS_KEYS }}
