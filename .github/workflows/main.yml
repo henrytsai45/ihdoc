@@ -31,7 +31,7 @@ jobs:
 
       - name: 安裝與 Google Chrome 匹配的 ChromeDriver
         run: |
-          DRIVER_VERSION="113.0.5672.63"  # ✅ 固定 ChromeDriver 版本
+          DRIVER_VERSION="133.0.6943.53"  # ✅ 固定 ChromeDriver 版本
           echo "🔍 下載 ChromeDriver 版本: $DRIVER_VERSION"
 
           wget -q "https://storage.googleapis.com/chrome-for-testing-public/$DRIVER_VERSION/linux64/chromedriver-linux64.zip"
