@@ -45,9 +45,12 @@ def main():
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
-    chrome_options.binary_location = "/usr/bin/google-chrome" 
-    
+
+    proxy = "127.0.0.1:40000"
+    chrome_options.add_argument(f'--proxy-server={proxy}')
+
     service = Service("/usr/bin/chromedriver")
+
     driver = webdriver.Chrome(service=service, options=chrome_options)
     
     THEURL = os.getenv("THEURL")
