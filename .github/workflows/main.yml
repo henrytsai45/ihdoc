@@ -1,0 +1,31 @@
+name: Run IHDOC_end.py Every 10 Minutes
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'  # 每 20 分鐘執行一次
+  workflow_dispatch:  # 允許手動執行
+
+jobs:
+  run_script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 檢出程式碼
+        uses: actions/checkout@v3
+
+      - name: 設置 Python 環境
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: 安裝依賴
+        run: pip install selenium gspread oauth2client
+
+      - name: 執行 Python 腳本
+        env:
+          GOOGLE_SHEETS_KEYS: ${{ secrets.GOOGLE_SHEETS_KEYS }}
+          IHGMAIL: ${{ secrets.IHGMAIL }}
+          IHPASSWORD: ${{ secrets.IHPASSWORD }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          THEURL: ${{ secrets.THEURL }}
+        run: python IHDOC_end.py
