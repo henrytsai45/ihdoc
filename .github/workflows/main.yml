@@ -1,4 +1,4 @@
-name: Run IHDOC_end.py Every 10 Minutes
+name: Run IHDOC_end.py Every 20 Minutes
 
 on:
   schedule:
@@ -20,6 +20,17 @@ jobs:
 
       - name: 安裝依賴
         run: pip install selenium gspread oauth2client
+
+      - name: 安裝 Chrome & Chrome 驅動
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser chromium-chromedriver
+          echo "Chrome & Chromedriver 安裝完成"
+
+      - name: 確保 Chrome & Chromedriver 存在
+        run: |
+          google-chrome --version
+          chromedriver --version
 
       - name: 執行 Python 腳本
         env:
