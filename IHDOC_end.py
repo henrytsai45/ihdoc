@@ -88,21 +88,22 @@ def main():
             more_data_button.click()
         except Exception as e:
             print("無法點擊「更多數據」按鈕: ", e)
-
+        time.sleep(2)
         # 選擇今天的數據
         try:
             parent_element = driver.find_element(By.XPATH, "//div[contains(@class, 'DateRange__StyledCurrentDateRange')]")
             parent_element.click()
-
+            time.sleep(2)
             today_button = wait.until(
                 EC.element_to_be_clickable((By.XPATH, "//div[@role='tab' and contains(@class, 'DateMultiRangePickerModal__ToolkitsOption') and text()='今天']"))
             )
             today_button.click()
-
+            time.sleep(2)
             apply_button = wait.until(
                 EC.element_to_be_clickable((By.XPATH, "//div[@role='button' and contains(@class, 'Button__Container') and text()='套用']"))
             )
             apply_button.click()
+            time.sleep(2)
         except Exception as e:
             print("無法選擇今天的數據: ", e)
 
