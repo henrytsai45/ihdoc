@@ -67,13 +67,16 @@ jobs:
 
       - name: 設置並啟動 Cloudflare WARP（手動模式）
         run: |
-          sudo warp-cli register
+          sudo warp-cli registration
           sudo warp-cli set-mode proxy
           sudo warp-cli connect
           sleep 5  # 等待 VPN 連線
           sudo warp-cli status  # 確認 VPN 連線狀態
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
+          
+      - name: 檢查 Cloudflare WARP 版本
+        run: warp-cli --version
 
       - name: 測試 VPN 是否生效
         run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
