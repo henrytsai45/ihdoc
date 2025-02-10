@@ -41,18 +41,15 @@ def write_to_google_sheets(transaction_total, gross_sales):
     sheet.insert_row(new_row, 2)
 
 def main():
-    proxy = "127.0.0.1:40000"
     chrome_options = Options()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument(f'--proxy-server={proxy}')
-
+    chrome_options.binary_location = "/usr/bin/google-chrome" 
+    
     service = Service("/usr/bin/chromedriver")
-
     driver = webdriver.Chrome(service=service, options=chrome_options)
-    driver.get("https://ipinfo.io")
-    print(driver.page_source)  # 這應該顯示台灣 IP
+    
     THEURL = os.getenv("THEURL")
     if not THEURL:
         raise ValueError("❌ THEURL 環境變數未設定，請檢查 GitHub Secrets。")
