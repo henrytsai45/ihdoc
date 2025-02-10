@@ -65,11 +65,15 @@ jobs:
 
       - name: 設置並啟動 Cloudflare WARP
         run: |
-          sudo warp-cli registration new  # 🔹 註冊 WARP 帳號（必要）
-          sudo warp-cli set-mode proxy    # 🔹 設置代理模式
-          sudo warp-cli connect           # 🔹 連線 WARP VPN
+          sudo warp-cli registration new --accept-tos   # 🔹 自動接受 WARP 條款
+          sudo warp-cli set-mode proxy                  # 🔹 設置代理模式
+          sudo warp-cli connect                         # 🔹 連線 WARP VPN
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
+
+      - name: 測試 VPN 是否啟動（應該顯示台灣 IP）
+        run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
+
 
       - name: 測試 VPN 是否啟動（應該顯示台灣 IP）
         run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
