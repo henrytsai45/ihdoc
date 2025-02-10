@@ -1,8 +1,8 @@
-name: Run IHDOC_end.py Every 5 Minutes
+name: Run IHDOC_end.py Every 20 Minutes
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # 每 20 分鐘執行一次
+    - cron: '*/20 * * * *'  # 每 20 分鐘執行一次
   workflow_dispatch:  # 允許手動執行
 
 jobs:
@@ -49,40 +49,6 @@ jobs:
       - name: 安裝 Python 依賴
         run: pip install selenium gspread oauth2client pytz
         
-      - name: 安裝 Cloudflare WARP (修正 GPG 錯誤)
-        run: |
-          sudo apt update
-          sudo apt install -y curl
-          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ jammy main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
-          sudo apt update
-          sudo apt install -y cloudflare-warp
-
-
-          
-      - name: 檢查 Cloudflare WARP 版本
-        run: warp-cli --version
-
-      - name: 設置並啟動 Cloudflare WARP
-        run: |
-          echo | sudo warp-cli registration new  # 🔹 自動輸入空行，防止交互式確認
-          sudo warp-cli set-mode proxy          # 🔹 設置代理模式
-          sudo warp-cli connect                 # 🔹 連線 WARP VPN
-          export HTTPS_PROXY="http://127.0.0.1:40000"
-          export HTTP_PROXY="http://127.0.0.1:40000"
-
-      - name: 測試 VPN 是否啟動（應該顯示台灣 IP）
-        run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
-
-
-      - name: 測試 VPN 是否啟動（應該顯示台灣 IP）
-        run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
-
-
-      - name: 測試 VPN 是否啟動（應該顯示台灣 IP）
-        run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
-
-
       - name: 執行 Python 腳本
         env:
           GOOGLE_SHEETS_KEYS: ${{ secrets.GOOGLE_SHEETS_KEYS }}
