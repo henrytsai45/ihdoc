@@ -1,8 +1,8 @@
-name: Run IHDOC_end.py Every 20 Minutes
+name: Run IHDOC_end.py Every 5 Minutes
 
 on:
   schedule:
-    - cron: '*/20 * * * *'  # 每 20 分鐘執行一次
+    - cron: '*/5 * * * *'  # 每 20 分鐘執行一次
   workflow_dispatch:  # 允許手動執行
 
 jobs:
