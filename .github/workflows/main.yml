@@ -80,12 +80,12 @@ jobs:
           export HTTPS_PROXY="http://127.0.0.1:40000"
           export HTTP_PROXY="http://127.0.0.1:40000"
 
+      - name: 確認 Cloudflare WARP 連線狀態
+        run: |
+          sudo warp-cli registration show
+          sudo warp-cli status
+          curl --proxy 127.0.0.1:40000 https://ipinfo.io
 
-
-
-
-      - name: 檢查當前 IP（應該是台灣）
-        run: curl --proxy 127.0.0.1:40000 https://ipinfo.io
 
       - name: 執行 Python 腳本
         env:
